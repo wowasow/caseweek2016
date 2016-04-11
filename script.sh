@@ -49,12 +49,10 @@ function convertToIdeaProject() {
 }
 
 
-if [ ! -d $ARTIFACT_ID ]; then
-	generateMvnProject
-	generateMvnWrapper
-	#convertToEclipseProject
-	#convertToIdeaProject
-	#convertToGradle
-	#removeMvnLeftOvers
-fi
+generateMvnProject
+generateMvnWrapper
+#convertToEclipseProject
+#convertToIdeaProject
+#convertToGradle
+#removeMvnLeftOvers
 
