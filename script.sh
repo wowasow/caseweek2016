@@ -28,6 +28,8 @@ function generateMvnProject() {
 }
 
 function generateMvnWrapper() {
+	cd $ARTIFACT_ID
+
  	mvn -N com.rimerosolutions.maven.plugins:wrapper-maven-plugin:0.0.4:wrapper  \
 		-DmavenVersion=$MVN_VERSION
 }
