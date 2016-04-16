@@ -3,16 +3,21 @@
 #maven properties
 MVN_VERSION=3.3.1
 
-# archetype specific
+# archetype specific - vertx 2.0
+# INTERACTIVE_MODE=false
+# ARCHETYPE_GROUP_ID=io.vertx
+# ARCHETYPE_ARTIFACT_ID=vertx-maven-archetype
+
 INTERACTIVE_MODE=false
-ARCHETYPE_GROUP_ID=io.vertx
-ARCHETYPE_ARTIFACT_ID=vertx-maven-archetype
+ARCHETYPE_GROUP_ID=org.apache.maven.archetypes
+ARCHETYPE_ARTIFACT_ID=maven-archetype-quickstart
+
 
 # project specific
 GROUP_ID=com.comarch
-ARTIFACT_ID=caseweek2016-vertx
-VERSION=1.0-SNAPSHOT
-PACKAGE=com.comarch.caseweek2016
+ARTIFACT_ID=caseweek2016-vertx-3.0
+VERSION=0.1-SNAPSHOT
+PACKAGE=com.comarch.caseweek
 
 function generateMvnProject() {
 	mvn -X -e archetype:generate \
@@ -53,6 +58,7 @@ function convertToIdeaProject() {
 
 generateMvnProject
 generateMvnWrapper
+
 #convertToEclipseProject
 #convertToIdeaProject
 #convertToGradle
