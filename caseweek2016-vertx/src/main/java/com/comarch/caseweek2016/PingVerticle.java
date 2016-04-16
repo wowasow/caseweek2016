@@ -17,25 +17,34 @@ package com.comarch.caseweek2016;
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.platform.Verticle;
+import java.util.logging.Level;
 
-/*
-This is a simple Java verticle which receives `ping` messages on the event bus and sends back `pong` replies
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Future;
+import io.vertx.core.Handler;
+import io.vertx.core.eventbus.Message;
+
+/**
+ * @author Wojciech Wrzalik <wojciech.wrzalik@comarch.com>
  */
-public class PingVerticle extends Verticle {
+public class PingVerticle extends AbstractVerticle {
+	
+	private final static java.util.logging.Logger LOGGER 
+		= java.util.logging.Logger.getLogger(PingVerticle.class.getName());
+	
 
-  public void start() {
+	@Override
+	public void start(Future<Void> startFuture) throws Exception {
+		vertx.eventBus().consumer("ping-address", new Handler<Message<String>>() {
 
-    vertx.eventBus().registerHandler("ping-address", new Handler<Message<String>>() {
-      @Override
-      public void handle(Message<String> message) {
-        message.reply("pong!");
-        container.logger().info("Sent back pong");
-      }
-    });
+			@Override
+			public void handle(Message<String> message) {
+				message.reply("pong!");
+				LOGGER.log(Level.INFO, "Sent back pong");
+			}
+		});
 
-    container.logger().info("PingVerticle started");
-  }
+		startFuture.complete();
+	}
+
 }
