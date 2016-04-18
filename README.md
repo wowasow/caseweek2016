@@ -1,7 +1,16 @@
 # init vertx project - initial step
 
 This step should get you familiar with:
-* 
+* Working with verticles
+
+What is a verticle ? 
+* class with its own classloader
+* operates a single thread
+* executed in event loop
+
+Vertx is:
+* build on top of netty.
+* uses hazelcast for node discovery
 
 1. Create a simple verticle that extends AbstractVerticle and implements its start method
 
