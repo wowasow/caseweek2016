@@ -14,3 +14,5 @@ I this step we learn how to:
 4. Choose a random port 
 
 5. Add external configuration under src/main/conf/application-config.json
+
+6. Add make configuraiton to environment variable.

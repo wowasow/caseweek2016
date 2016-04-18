@@ -35,6 +35,5 @@ public class HttpServerVerticle extends AbstractVerticle {
 				startFuture.fail(ex);
 			}
 		});
-
 	}
 }
