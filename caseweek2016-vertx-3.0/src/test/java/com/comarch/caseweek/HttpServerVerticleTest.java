@@ -32,8 +32,8 @@ public class HttpServerVerticleTest {
 
 	@Test
 	public void test(TestContext context) {
-		int port = HttpServerVerticle.PORT;
-		String host = HttpServerVerticle.HOST;
+		int port = HttpServerVerticle.PORT_DEFAULT;
+		String host = HttpServerVerticle.HOST_DEFAULT;
 		String path = HttpServerVerticle.PATH;
 
 		HttpClient httpClient = vertx.createHttpClient();
