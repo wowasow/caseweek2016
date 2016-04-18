@@ -1,28 +1,37 @@
 package com.comarch.caseweek;
 
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
+import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServer;
 
 public class HttpServerVerticle extends AbstractVerticle {
-	
-//	private static final Logger LOGGER = Logger.getLogger(HttpServerVerticle.class.getName());
+
+	public static final int PORT = 8080;
+	public static final String HOST = "localhost";
+	public static final String PATH = "/";
 
 	@Override
 	public void start(Future<Void> startFuture) throws Exception {
-//		LOGGER.info("testsssssds");
-//		LOGGER.info("testsds xxx");
-//		LOGGER.info("testsds xxx");
-		
+
 		HttpServer httpServer = vertx.createHttpServer();
 
 		httpServer.requestHandler(request -> {
 			request.response().end("<p>Hello World test</p>");
 		});
 
-		httpServer.listen(8080);
+		httpServer.listen(PORT, HOST, new Handler<AsyncResult<HttpServer>>() {
+			
+			@Override
+			public void handle(AsyncResult<HttpServer> event) {
+				if(event.succeeded())
+					startFuture.complete();
+				else 
+					startFuture.fail(event.cause());
+			}
+		});
 
 		super.start(startFuture);
 	}
-
 }

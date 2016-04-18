@@ -1,160 +1,11 @@
 # init vertx project - initial step
 
 This step should get you familiar with:
-* generation of vertx project using Maven/Gradle
-* importing project to your favourite IDE
-* Learn about vertx project structure
-* Learn about basic vertx concepts
+* 
 
+1. Create a simple verticle that extends AbstractVerticle and implements its start method
 
-1. Generate project structure 
-2*. Optional: Change sources to eclipse or intelij sources
-3. Import project ot your favourite IDE 
-
-In my case it is eclipse [add screens to presentation] however feel free to use 
-the  best IDE that suits all your needs.
-
-4. Describe structure of a newly created project
-
-[print directory structure and eventually add those screens to presentation]
-After successful project generation and importing it to the IDE you should be able to display the following project structure:
-
-+---maven 				# maven wrapper jars
-+---src 				# project sources
-¦   +---main
-¦   ¦   +---assembly 			# [0] for maven assembly plugin
-¦   ¦   +---java 			# this is where java source files reside
-¦   ¦   ¦   +---com
-¦   ¦   ¦       +---comarch
-¦   ¦   ¦           +---caseweek2016
-¦   ¦   +---platform_lib		# [1]
-¦   ¦   +---resources			
-¦   ¦       +---platform_lib
-|   |	    +---mod.json 		# [4]
-|   |
-¦   +---test 				# directory for all the tests
-¦       +---java
-¦       ¦   +---com
-¦       ¦       +---comarch
-¦       ¦           +---caseweek2016
-¦       ¦               +---integration
-¦       ¦               ¦   +---groovy
-¦       ¦               ¦   +---java
-¦       ¦               ¦   +---javascript
-¦       ¦               ¦   +---python
-¦       ¦               ¦   +---ruby
-¦       ¦               +---unit
-¦       +---resources
-|	    +---platform_lib		# [2]
-¦           +---integration_tests
-¦               +---groovy
-¦               +---javascript
-¦               +---python
-¦               +---ruby
-|---pom.xml 				# maven configuration file
-
-The generated project is a sample maven vertx module that listens for ping messages on vertx event bus. 
-This is all that we need at the moment.
-
-By default created module contains a simple Java verticle which listens on the event bus and responds to `ping!`
-messages with `pong!`.
-
-The example shows how to write a testin mutliply languages groovy, java, javascript, python, ruby.
-
-The fatjar starter knows to add this directory (and any jars/zips inside it) to the Vert.x platform classpath when executing your module as a fatjar. 	
-
-The most important directories and files are in the examples are:
-	* src/main/java 		# this is where our sources are going to reside
-	* src/main/test/java		# this is where our tests are going to reside
-	* pom.xml			# main configuration point for every maven project
-
-Lets take a look at pom.xml. There you should be able to see a bunch of properties: 
-	* pullInDeps - (as described) whether module's dependencies are going to be dowloaded during packaing or runtime (when used for the first time)
-	* createFatJar - package entire module as a fat jar (which contains moduls binaries and vertx platfor jars) that can be run from command line
-			as java -jar ....
-	* module.name - self explanatory
- 	* mods.directory - where module is going to be assembled,
-
-	* dependencies version - versions of dependencies that are required by out module
-	* [maven plugin versions]
-
-The properties are used in maven plugins used to compile/package the project. The most important dependencies used in the project are:
-	* vertx-core - Vert.x core contains fairly low level functionality including support for HTTP, TCP, file system access, and various other features. 
-		You can use this directly in your own applications, and it's used by many of the other components of Vert.x
-	* vertx-platform 
-	* vertx-hazelcast - It is the default cluster manager used in the Vert.x distribution, but it can be replaced with another implementation as Vert.x 
-		cluster managers are pluggable. This implementation is packaged inside:
-	* junit - library used for test suits etc.
-	* testtools - testing our asynchronous applications
-
-5. Lets change a couple of things in our pom:
-	* [change vertx version to 3.2.1] and modyfi a code so that it is compiled with the newset version
-	* [change vertx testools to vertx-unit:3.0.0]
-	* change java version in maven-compiler plugin to jdk 1.8 so that it can be used with our module.
-	* change vertx.createFatJar property to true so that we can build a fat jar and run it independently of our IDE
-	* remove all the necessary 
-	* note auto-redeploy
-
-*** NEW ***
-
-5. Vertx consists of many modules that allows for development of reactive applications. We are going to start with its core module
-	vertx-core. So go ahead and add all the required dependencies:
-		* vertx-core:3.1.2
-		* change version of junit to 4.12
-		* add maven compiler plugin 3.3
-
-7. Create a simple main class that is going to be used in order to bootstrap our verticle
-
-8. Run project as a simple java application through eclipse.
-
-10. run `mvn clean install` to build your application and `java -jar <PATH_TO_FAT_JAR>`
-
-9. Create a fat jur
-	* add maven shade plugin for generating fat jar
-	* [optional] add plugin for separation of integration/unit tests 
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.3</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<transformers>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<manifestEntries>
-										<Main-Class>io.vertx.core.Starter</Main-Class>
-										<Main-Verticle>com.comarch.caseweek.HttpServerVerticle</Main-Verticle>
-									</manifestEntries>
-								</transformer>
-							</transformers>
-							<artifactSet />
-							<outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar</outputFile>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-
-11. Change your maven so that it is redeployable
-
-10. Create a redeployable vertx instance  
-
-Summary Running alternatives:
-	* fatjar - build using maven-shade-plugin
-	* as a simple java project with main method (where Runner is used) from IDE or through 
-		``` mvn compile exec:java ```
-	* through vertx command line
-	* 
-
-6. Create a simple verticle that extends AbstractVerticle and implements its start method
-
-7. Run the project by issuing 
+2. Run the project by issuing 
 	``` mvn clean install ``` - not necessary
 
 TODO: get to know how to run all the verticles
@@ -208,6 +59,8 @@ TODO: in the next step we are going to deploy multiply verticles in the one step
 	NOTE: remember about correct naming of unit/integraiton tests
 	NOTE: remember about calling assertion method that are accessible from TestContext instance and not those from JUnit
 		because of vertx asynchronous nature
+
+9. Lets deploy the verticle in the main class
 
 9. Now, taking a little different approach, we are going to try out some TDD. 
 
