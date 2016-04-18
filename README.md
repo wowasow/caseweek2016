@@ -7,7 +7,7 @@ This step should get you familiar with:
 * Learn about basic vertx concepts
 
 
-1. Generate project structure (copy from github)
+1. Generate project structure 
 2*. Optional: Change sources to eclipse or intelij sources
 3. Import project ot your favourite IDE 
 
@@ -95,20 +95,76 @@ The properties are used in maven plugins used to compile/package the project. Th
 	* remove all the necessary 
 	* note auto-redeploy
 
-6. Lets review vertx main configuraiton file mod.json
+*** NEW ***
+
+5. Vertx consists of many modules that allows for development of reactive applications. We are going to start with its core module
+	vertx-core. So go ahead and add all the required dependencies:
+		* vertx-core:3.1.2
+		* change version of junit to 4.12
+		* add maven compiler plugin 3.3
+
+7. Create a simple main class that is going to be used in order to bootstrap our verticle
+
+8. Run project as a simple java application through eclipse.
+
+10. run `mvn clean install` to build your application and `java -jar <PATH_TO_FAT_JAR>`
+
+9. Create a fat jur
+	* add maven shade plugin for generating fat jar
+	* [optional] add plugin for separation of integration/unit tests 
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<manifestEntries>
+										<Main-Class>io.vertx.core.Starter</Main-Class>
+										<Main-Verticle>com.comarch.caseweek.HttpServerVerticle</Main-Verticle>
+									</manifestEntries>
+								</transformer>
+							</transformers>
+							<artifactSet />
+							<outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar</outputFile>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+11. Change your maven so that it is redeployable
+
+10. Create a redeployable vertx instance  
+
+Summary Running alternatives:
+	* fatjar - build using maven-shade-plugin
+	* as a simple java project with main method (where Runner is used) from IDE or through 
+		``` mvn compile exec:java ```
+	* through vertx command line
+	* 
+
+6. Create a simple verticle that extends AbstractVerticle and implements its start method
 
 7. Run the project by issuing 
 	``` mvn clean install ``` - not necessary
-	mvn vertx:runMod
 
 TODO: get to know how to run all the verticles
 TODO: in the next step we are going to deploy multiply verticles in the one step
 	
 [COMMAND]
 
-9. Lets review generated verticle. 
+9. Lets create our first verticle. 
 	
-	By extending AbstractVerticle [change Verticle to AbstractVerticle] we are creating a
+	By extending AbstractVerticle we are creating a
 	a component managed by a vertx container. This way wa can obtain access to vertx field that lets as communicate 
 	with the container. 
 
@@ -123,7 +179,7 @@ TODO: in the next step we are going to deploy multiply verticles in the one step
 	effectly convince us the need of Futures in the vertx.   
 
 
-8. Lets review ists test TDD development let's write a simple test explaining testing concepts. [maybe a good exercise]
+8. Lets write a sample test for verticle TDD development let's write a simple test explaining testing concepts. [maybe a good exercise]
 
 	In vertx word to test vertices we are using well known JUnit with vertx custom VertxUnitRunner. This class allows us 
 	to inject TestContext to our classes and therefore obtaining access to asynchronous testing potential provided by vertx.
@@ -163,7 +219,7 @@ TODO: in the next step we are going to deploy multiply verticles in the one step
 	server. This time it is crucial to use a future passed to the start method because server initializaiton may fail due to
 	e.g. socket failure (complete/fail methods).
 
-10. Create a test to third verticle [just as a exercise], maybe a socket client.
+10. Create a test to third verticle [just as an exercise], maybe a socket client.
 
 11. Create a 3nd verticle that is used to communicate with the generated  one or client to our http server.
 
@@ -181,14 +237,6 @@ TODO: in the next step we are going to deploy multiply verticles in the one step
 
 	and execute our fat jar using:
 	java -jar <JAR_LOCATION>
-
-Running alternatives:
-	* fatjar - build using maven-shade-plugin
-	* as a simple java project with main method (where Runner is used) from IDE or through 
-		``` mvn compile exec:java ```
-	* through vertx command line
-
-
 
 notes about directories: 
 	[0] The Assembly Plugin for Maven is primarily intended to allow users to aggregate the project output along with its dependencies, modules, site 
