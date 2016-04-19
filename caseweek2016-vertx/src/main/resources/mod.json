@@ -1,8 +1,0 @@
-{
-  // Java verticle
-  "main":"com.comarch.caseweek2016.PingVerticle",
-  "main":"com.comarch.caseweek2016.HttpServerVerticle",
-
-
-  "auto-redeploy": true
-}
